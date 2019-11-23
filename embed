@@ -1,0 +1,52 @@
+%% 
+hideOne=imread('hidden01.png');
+
+binOne=imbinarize(hideOne)
+%% hideFive=imread('hidden05.png');
+
+%{
+hideTwo=imread('hidden02.png'); 
+imshow(hideTwo)
+binTwo=imbinarize(hideTwo)
+%}
+%%
+dogSmirk=imread('dogImage.png');
+imshow(dogSmirk)
+reddogSmirk=dogSmirk(:,:,1);
+
+%% odd/even red embedding
+ for i=1:numel(binOne) %% or numel(binTwo)
+  
+     if (binOne(i)==1) %% hidden pixel is white
+         
+         if (mod(reddogSmirk(i),2)==0) %% dog pixel is even
+             reddogSmirk(i)=reddogSmirk(i)+0; %% keep dog pixel even
+     else reddogSmirk(i)=reddogSmirk(i)+1; %% set dog pixel to even
+         end
+    
+     elseif (binOne(i)==0) %% hidden pixel is black
+             if (mod(reddogSmirk(i),2)==0) %% dog pixel is even
+                reddogSmirk(i)=reddogSmirk(i)+1; %% set dog pixel odd
+         else reddogSmirk(i)=reddogSmirk(i)+0; %% keep dog pixel odd 
+             end
+     end
+    
+ end
+     dogSmirk(:,:,1)=reddogSmirk;
+     checkdog=dogSmirk(:,:,1)
+         imshow(dogSmirk) %% dog pix with hidden image
+  
+ %%
+revealHidden=zeros(400,400);
+     for i=1:10 %numel(revealHidden)
+         for j=1:10
+         if (mod(reddogSmirk(i,j),2)==0)
+             revealHidden(i,j)=1
+        
+         else
+             revealHidden(i,j)=0
+         end
+         end
+         
+     end
+     imshow(revealHidden)
